@@ -2,7 +2,8 @@ import socket #this will be a TCP network
 import hashlib #built-in python hash function library
 import re 
 
-port = 2346
+hashStore = []
+port = 2345
 s = socket.socket()
 host = socket.gethostname()
 s.bind((host, port))
@@ -23,26 +24,23 @@ while True:
     print(algo_slice)
 
     # This receives the list of filenames passed into the client.
-    filenames_slice = conn.recv(4096)
+    filenames_slice = conn.recv(1024)
     remainder = filenames_slice.decode()
     remainder = re.findall(r'"([^"]*)"', remainder)
-    for idx, value in enumerate(remainder):
-        print(remainder[idx])
+    for idx, value in enumerate(remainder): 
+        print('working file: ', remainder[idx])
+        filename = value
 
-    # This begins the file reading process
-    filename = "nicki.txt"
-    f = open(filename, 'rb')
-    l = f.read(4096)
-    while (l):
-        l = f.read(4096)
-    parser.update(l)
-    response = parser.hexdigest()
-    conn.send(response.encode())
-    f.close()
-
-    conn.send('     '.encode())
-    conn.send(filename.encode())
-    print(f'Done sending {filename}.')
+        f = open(filename, 'rb')
+        l = f.read(1024)
+        while (l):
+            l = f.read(1024)
+        parser.update(l)
+        response = parser.hexdigest()
+        conn.send(response.encode())
+        conn.send('     '.encode())
+        conn.send(filename.encode())
+        print(f'Done sending {filename}.')    
+        f.close()
     conn.close()
-
 s.close()

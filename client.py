@@ -31,14 +31,14 @@ s.send(file_packet.encode())
 
 with open('readout.txt', 'wb') as f:
     while True:
-          data = s.recv(1024)
+          data = s.recv(4069)
           if not data:
               break
           f.write(data)
+          f.write('\n'.encode())
     f.close()
-s.close()
 
 with open('readout.txt', 'r') as fin:
-    print(fin.read())
+    print(fin.read(), end="")
 
 
