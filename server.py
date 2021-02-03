@@ -2,7 +2,7 @@ import socket #this will be a TCP network
 import hashlib #built-in python hash function library
 import re 
 
-port = 2345
+port = 2346
 s = socket.socket()
 host = socket.gethostname()
 s.bind((host, port))
@@ -26,8 +26,8 @@ while True:
     filenames_slice = conn.recv(4096)
     remainder = filenames_slice.decode()
     remainder = re.findall(r'"([^"]*)"', remainder)
-    print(remainder[0])
-    print(remainder[1])
+    for idx, value in enumerate(remainder):
+        print(remainder[idx])
 
     # This begins the file reading process
     filename = "nicki.txt"
