@@ -19,13 +19,19 @@ print(f'Connecting to {args.ip}:{port}...')
 s.connect((host, port))
 
 #with the socket open, write data received over it into a new file.
-arg_packet = json.dumps([args.algorithm, args.files])
+arg_packet = json.dumps([args.algorithm])
 print(arg_packet)
 s.send(arg_packet.encode())
 
+#Now send the file names over
+file_packet = json.dumps([args.files])
+print('File packet: ', file_packet)
+s.send(file_packet.encode())
+
+
 with open('readout.txt', 'wb') as f:
     while True:
-          data = s.recv(4096)
+          data = s.recv(1024)
           if not data:
               break
           f.write(data)
